@@ -14,12 +14,15 @@ class CreateForecastTable extends Migration
     public function up()
     {
         //
-        Schema::create('forecast', function (Blueprint $table) {
+        Schema::create('forecasts', function (Blueprint $table) {
             $table->increments('id');
+			$table->integer('year');
 			$table->integer('month');
             $table->integer('day');
             $table->integer('hour');
             $table->double('pv_output',10,2);
+			$table->float('cloud_coverage')->nullable();
+            $table->double('pv_output_correction',10,2)->nullable();
             $table->integer('location_id');
             $table->timestamps();
         });
@@ -33,6 +36,6 @@ class CreateForecastTable extends Migration
     public function down()
     {
         //
-        Schema::drop('forecast');
+        Schema::drop('forecasts');
     }
 }

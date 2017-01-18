@@ -14,7 +14,7 @@ class CreateLocationTable extends Migration
     public function up()
     {
         //
-        Schema::create('location', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('name', 512);
 			$table->string('weather_station', 512);
@@ -41,6 +41,6 @@ class CreateLocationTable extends Migration
     public function down()
     {
         //
-        Schema::drop('location');
+        Schema::drop('locations');
     }
 }

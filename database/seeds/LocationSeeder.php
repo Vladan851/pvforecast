@@ -29,6 +29,6 @@ class LocationSeeder extends Seeder
             
 
         ];
-		DB::table('location')->insert($insert);
+		DB::table('locations')->insert($insert);
     }
 }

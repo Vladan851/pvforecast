@@ -39,6 +39,7 @@ class ForecastSeeder extends Seeder
         $insert = [];
         foreach ($forecast as $f){
             $insert[] = [
+	        'year' => '2017',
             'month' => $f['Month'],
             'day' => $f['Day'],
             'hour' => $f['Hour'],
@@ -47,7 +48,7 @@ class ForecastSeeder extends Seeder
             ];
         }
         
-        DB::table('forecast')->insert($insert);
+        DB::table('forecasts')->insert($insert);
     
     
 //        $insert[] = [
