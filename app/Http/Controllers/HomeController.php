@@ -1,17 +1,14 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace App\Http\Controllers;
 
-class ForecastSeeder extends Seeder
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    //
+    public function index()
     {
-        //
        function csv_to_array($filename='', $delimiter=',')
        {
             if(!file_exists($filename) || !is_readable($filename))
@@ -36,27 +33,20 @@ class ForecastSeeder extends Seeder
         $csvFile = public_path().'/pvwatts.csv';
 
         $forecast = csv_to_array($csvFile);
-        $insert = [];
+       
         foreach ($forecast as $f){
-            $insert[] = [
-            'month' => $f['Month'],
-            'day' => $f['Day'],
-            'hour' => $f['Hour'],
-            'pv_output' => $f['AC System Output (W)'],
-            'location_id' => '1'
-            ];
+            $m = $f['Month'];
+            $d = $f['Day'];
+            $h = $f['Hour'];
+            $pv = $f['AC System Output (W)'];
         }
         
-        DB::table('forecast')->insert($insert);
-    
-    
-//        $insert[] = [
-//            'month' => '1',
-//            'day' => '1',
-//            'hour' => '12',
-//            'pv_output' => '42.37',
-//            'location_id' => '1'
-//        ];
-//   	  DB::table('forecast')->insert($insert);
+
+        var_export($forecast); //prikazuje niz
+        
+        exit();
+
+        
+        return view('home');
     }
 }

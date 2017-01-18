@@ -19,7 +19,7 @@ class CreateForecastTable extends Migration
 			$table->integer('month');
             $table->integer('day');
             $table->integer('hour');
-            $table->string('name');
+            $table->double('pv_output',10,2);
             $table->integer('location_id');
             $table->timestamps();
         });
