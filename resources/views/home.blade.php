@@ -5,8 +5,9 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     </head>
     <body>   
-
-          Date: <input type="text" id="datepicker"></p>
+			<p>Choose a date for solar forecast!</p>
+			
+			Date:<input type="text" id="datepicker">
 	
 
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -37,12 +38,13 @@
         }).fail(function () {
             console.log("Problem!");
         });
-		//display(year+month+day);
+		display(date);
     });
 	function display(msg) {
     $("<p>").html(msg).appendTo(document.body);
-    }
-	</script>
 	
+    }
+	
+	</script>
     </body>
 </html>
