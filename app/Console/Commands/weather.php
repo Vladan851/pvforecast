@@ -61,10 +61,13 @@ class weather extends Command
 			if($pom->save()){
 				echo $pom->id.$year.",".$month.",".$day.",".$hour.",".$sky."\n";
 			}
-			$pom->pv_output_correction = $pom->pv_output*(0.3 + (100 - $sky)*0.007);
+			$pom->pv_output_correction = $pom->pv_output*(0.3 + (100 - $sky)*0.01);
 			$pom->save();
 		}
 		
-		$this->info('The http request is called successfully!');
+		$controller = app()->make('App\Http\Controllers\EmailController');
+        app()->call([$controller, 'send'], []);
+		
+		$this->info('Emails are sent successfully!');
     }
 }

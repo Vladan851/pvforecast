@@ -17,3 +17,8 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/search', 'HomeController@search')->name('search');
+Route::get('/send', 'EmailController@send');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

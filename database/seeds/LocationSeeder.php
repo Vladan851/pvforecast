@@ -25,7 +25,8 @@ class LocationSeeder extends Seeder
             'array_azimuth' => '180',
             'system_losses' => '15.79',
             'inverter_efficiency' => '98',
-            'dc_ac_ratio' => '1.1'
+            'dc_ac_ratio' => '1.1',
+			'user_id' => '1'
             
 
         ];
