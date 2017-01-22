@@ -47,17 +47,21 @@ class ForecastSeeder extends Seeder
             'location_id' => '1'
             ];
         }
+		
+		$insert1 = [];
+        foreach ($forecast as $f){
+            $insert1[] = [
+	        'year' => '2017',
+            'month' => $f['Month'],
+            'day' => $f['Day'],
+            'hour' => $f['Hour'],
+            'pv_output' => $f['AC System Output (W)'],
+            'location_id' => '2'
+            ];
+        }
         
         DB::table('forecasts')->insert($insert);
+		DB::table('forecasts')->insert($insert1);
     
-    
-//        $insert[] = [
-//            'month' => '1',
-//            'day' => '1',
-//            'hour' => '12',
-//            'pv_output' => '42.37',
-//            'location_id' => '1'
-//        ];
-//   	  DB::table('forecast')->insert($insert);
     }
 }

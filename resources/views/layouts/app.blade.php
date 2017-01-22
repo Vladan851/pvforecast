@@ -91,6 +91,7 @@
 	  $("#datepicker").datepicker();
 	}).on("change", function() {
 		var date = document.getElementById("datepicker").value;
+		var loc = document.getElementById("loc-search").value;
 		var par = date.split('/');
 		var month = par[0];
 		var day = par[1];
@@ -100,7 +101,8 @@
 			data: {
 				month: month,
 				day: day,
-				year: year
+				year: year,
+				loc: loc
 			},
 			type: 'get',
             dataType: 'json',
@@ -108,7 +110,7 @@
 			var str = JSON.stringify(data);
 //			var parx = str.split(',');
 //			for (var i=0; i < parx.length; i++) {
-//			 display(parx[i]);
+//			display(parx[i]);
 //			}
 			console.log(data);
 			display(str);
@@ -119,10 +121,8 @@
 		display(date);
     });
 	function display(msg) {
-    $("<p>").html(msg).appendTo(document.body);
-	
+		$("<p>").html(msg).appendTo(document.getElementById("pcx"));
     }
-	
 	</script>
 </body>
 </html>

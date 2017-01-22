@@ -21,6 +21,7 @@
 		@endforeach
 	  </tr>
 	</table>
+	<p>Ukupna proizvodnja za, {{$date1}}: {{$sum1}}</p>
 	<h3>{{$date2}}</h3>
 	<table style="width:100%">
 	  <tr>
@@ -34,6 +35,7 @@
 		@endforeach
 	  </tr>
 	</table>
+	<p>Ukupna proizvodnja za, {{$date2}}: {{$sum2}}</p>
 	<h3>{{$date3}}</h3>
 	<table style="width:100%">
 	  <tr>
@@ -47,6 +49,7 @@
 		@endforeach
 	  </tr>
 	</table>
-	<p>All prodaction values are in kW.</p>
+	<p>Ukupna proizvodnja za, {{$date3}}: {{$sum3}}</p>
+	<p><span>All prodaction values are in kW.</span></p>
 </body>
 </html>

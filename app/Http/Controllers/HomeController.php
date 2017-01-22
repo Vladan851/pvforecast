@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Forecast;
+use App\Location;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+		$locs = Location::all()->toArray();
+        return view('home')->with('locs', $locs);
+        //return view('home');
     }
 	
 	public function search(Request $request)
@@ -33,13 +36,13 @@ class HomeController extends Controller
 		if($request->ajax()){
 			$input = $request->input();
 		}      
-        $forecasts = Forecast::where('year', $input['year'])->where('month', $input['month'])->where('day', $input['day'])->get();
+        $forecasts = Forecast::where('location_id', $input['loc'])->where('year', $input['year'])->where('month', $input['month'])->where('day', $input['day'])->get();
 		$pv = [];
 		$h = [];
 		$i = 0;
 		foreach ($forecasts as $f){
 			if($f->pv_output_correction!=0){
-			$pv[$i] = $f->pv_output_correction;
+			$pv[$i] = $f->pv_output_correction/1000;
 			$h[$i] = $f->hour;
 			$i++;
 			}
