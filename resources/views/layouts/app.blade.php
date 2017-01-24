@@ -88,8 +88,8 @@
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script>
 	$(function() {
-	  $("#datepicker").datepicker();
-	}).on("change", function() {
+	  var dp = $("#datepicker").datepicker();
+		dp.on("change", function() {
 		var date = document.getElementById("datepicker").value;
 		var loc = document.getElementById("loc-search").value;
 		var par = date.split('/');
@@ -123,6 +123,7 @@
 	function display(msg) {
 		$("<p>").html(msg).appendTo(document.getElementById("pcx"));
     }
+	})
 	</script>
 </body>
 </html>
