@@ -10,6 +10,7 @@ use App\Location;
 class EmailController extends Controller
 {
     //
+	//
 	public function send(Request $request){
     //Logic will go here        
 		//$currentDate = Date("Y/m/d");
