@@ -49,6 +49,6 @@ class HomeController extends Controller
 		}
 		$result = array_combine($h, $pv);
         return response()->json($result);
-		
+		//
 	}
 }
