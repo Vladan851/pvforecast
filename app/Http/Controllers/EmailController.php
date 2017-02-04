@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Forecast;
-use App\Location;
+use App\Models\Forecast;
+use App\Models\Location;
 
 class EmailController extends Controller
 {
     //
 	//
 	public function send(Request $request){
-    //Logic will go here        
+    //Logic will go here
 		//$currentDate = Date("Y/m/d");
 		$currentDate1 = Date('Y/n/j', strtotime("+1 day"));
 		$currentDate2 = Date('Y/n/j', strtotime("+2 days"));
 		$currentDate3 = Date('Y/n/j', strtotime("+3 days"));
-		
+
 		$locations = Location::all();
 		foreach ($locations as $loc){
 			$location = $loc->name.', '.$loc->dc_size.'kW';
-			
+
 			$email = $loc->user->email;
 			$email1 = $loc->user->email1;
-			
+
 			$forecasts1 = $loc->forecasts->where('year', date("Y",strtotime($currentDate1)))->where('month', date('n',strtotime($currentDate1)))->where('day', date('j', strtotime($currentDate1)));
 			$forecasts2 = $loc->forecasts->where('year', date("Y",strtotime($currentDate2)))->where('month', date('n', strtotime($currentDate2)))->where('day', date('j', strtotime($currentDate2)));
 			$forecasts3 = $loc->forecasts->where('year', date("Y",strtotime($currentDate3)))->where('month', date('n', strtotime($currentDate3)))->where('day', date('j', strtotime($currentDate3)));
@@ -70,28 +70,28 @@ class EmailController extends Controller
 									   'sum3' => $sum3,
 				                       'loc' => $location,
 				                       'date1' => $currentDate1,
-				                       'hours1' => $h1, 
+				                       'hours1' => $h1,
 				                       'pvs1' => $pv1,
 				                       'date2' => $currentDate2,
-				                       'hours2' => $h2, 
+				                       'hours2' => $h2,
 				                       'pvs2' => $pv2,
 				                       'date3' => $currentDate3,
-				                       'hours3' => $h3, 
+				                       'hours3' => $h3,
 				                       'pvs3' => $pv3], function ($message) use ($email,$email1, $location)
 			{
 
             $message->from('inverterlog@gmail.com', 'InverterLog');
 
             $message->to($email);
-			
+
 			if($email1!=''){
 			$message->cc($email1);
 			}
-			
+
 			$message->subject("Three day forecast for: ".$location);
 
 			});
-			
+
 		}
 	return response()->json(['message' => 'Messages sent!']);
 	}

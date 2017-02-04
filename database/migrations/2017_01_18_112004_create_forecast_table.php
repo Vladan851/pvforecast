@@ -16,14 +16,21 @@ class CreateForecastTable extends Migration
         //
         Schema::create('forecasts', function (Blueprint $table) {
             $table->increments('id');
+			$table->integer('location_id');
 			$table->integer('year');
 			$table->integer('month');
             $table->integer('day');
             $table->integer('hour');
-            $table->double('pv_output',10,2);
-			$table->float('cloud_coverage')->nullable();
-            $table->double('pv_output_correction',10,2)->nullable();
-            $table->integer('location_id');
+            $table->integer('cloud_coverage')->nullable();
+            $table->integer('temperature')->nullable();
+            
+            // Yield fields (Wh)
+			$table->double('pv_output', 10, 2);
+			$table->double('pv_output_correction', 10, 2)->nullable();
+			$table->double('pv_output_renes', 10, 2)->nullable();
+			$table->double('pv_output_ai', 10, 2)->nullable();
+			$table->double('pv_output_actual', 10, 2)->nullable();
+
             $table->timestamps();
         });
     }

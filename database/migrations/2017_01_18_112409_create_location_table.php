@@ -29,6 +29,8 @@ class CreateLocationTable extends Migration
             $table->string('system_losses',255)->nullable();
 			$table->string('inverter_efficiency', 255)->nullable();
 			$table->string('dc_ac_ratio')->nullable();
+			$table->string('renes_api_call')->nullable();
+            $table->string('wunderground_api_call')->nullable();
 			$table->integer('user_id');
             $table->timestamps();
         });

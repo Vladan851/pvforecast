@@ -13,11 +13,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
-		\App\Console\Commands\weather::class,
+        Commands\GetRenes::class,
+		Commands\GetWeather::class,
+        Commands\SendReports::class,
     ];
-	
-	
+
+
 
     /**
      * Define the application's command schedule.
@@ -29,7 +30,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-		$schedule->command('wu:weather')->cron('* * * * *');
+		//$schedule->command('wu:weather')->cron('* * * * *');
     }
 
     /**
@@ -40,6 +41,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
-		
+
     }
 }
