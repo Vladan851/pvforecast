@@ -28,9 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-		//$schedule->command('wu:weather')->cron('* * * * *');
+        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:weather')->cron('* * * * *');
+
+        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:renes')->hourlyAt(7);
+
+        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:reports')->cron('30 * * * *');
     }
 
     /**

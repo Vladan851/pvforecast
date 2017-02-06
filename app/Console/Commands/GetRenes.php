@@ -40,5 +40,7 @@ class GetRenes extends Command
     {
         $this->info('started');
         $result = Location::updateRenes();
+        //var_dump($result);
+        mail('zv1985@gmail.com', 'Renes cron', "Status: {$result['status']}, Message: {$result['message']}");
     }
 }

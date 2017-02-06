@@ -11,14 +11,15 @@ class ForecastReport extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -26,8 +27,11 @@ class ForecastReport extends Mailable
      *
      * @return $this
      */
-    public function build($data)
+    public function build()
     {
-        return $this->subject("Predikcija: {$data['name']}")->view('emails.forecast')->with($data);
+        return $this->subject("Predikcija: {$this->data['name']}")
+                    ->from('pvforecast@example.com')
+                    ->view('emails.forecast')
+                    ->with('data', $this->data);
     }
 }

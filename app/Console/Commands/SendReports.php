@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Location;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ForecastReport;
 
 class SendReports extends Command
 {

@@ -41,5 +41,7 @@ class GetWeather extends Command
     {
         $result = Location::updateWeather();
         $this->info('Completed!');
+        //var_dump($result);
+        mail('zv1985@gmail.com', 'Weather cron', "Status: {$result['status']}, Message: {$result['message']}");
     }
 }
