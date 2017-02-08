@@ -40,7 +40,10 @@ class GetRenes extends Command
     {
         $this->info('started');
         $result = Location::updateRenes();
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone("Europe/Sarajevo"));
+
         //var_dump($result);
-        mail('zv1985@gmail.com', 'Renes cron', "Status: {$result['status']}, Message: {$result['message']}");
+        mail('zv1985@gmail.com', 'Renes cron ' . $date->format('Y-m-d H:i:s'), "Status: {$result['status']}, Message: {$result['message']}");
     }
 }

@@ -28,9 +28,29 @@ class Location extends Model
 		];
         $locs = self::all();
 		foreach ($locs as $l) {
+			echo 'started ' . $l->name . "\n";
 			$return['message'] .= 'Started ' . $l->name . '; ';
-			$json = file_get_contents($l->wunderground_api_call);
-			$hours = json_decode($json, true)['hourly_forecast'];
+			$ok = false;
+			$counter = 0;
+
+			while (!$ok && $counter<5) {
+				$json = file_get_contents($l->wunderground_api_call);
+				if (empty($json)) {
+					$counter++;
+					$return['status'] = 'error';
+					continue;
+				}
+				$hours = json_decode($json, true)['hourly_forecast'];
+				if (empty($hours)) {
+					$counter++;
+					$return['status'] = 'error';
+					continue;
+				}
+				$ok = true;
+			}
+
+			if (!$ok) continue;
+			$return['status'] = 'OK';
 
 			foreach ($hours as $h){
 	            $pom = $l->forecasts()->where([
@@ -43,6 +63,7 @@ class Location extends Model
 	            $pom->cloud_coverage = $h['sky'];
 	            $pom->temperature = $h['temp']['metric'];
 	            $pom->pv_output_correction = $pom->pv_output*(0.3 + (100 - $h['sky']) * 0.01);
+				$pom->pv_output_max_correction = $pom->pv_output_max*(0.3 + (100 - $h['sky']) * 0.01);
 
 				if($pom->save()){
 	                echo "{$pom->location_id}, {$pom->id}, {$pom->year}, {$pom->month}, {$pom->day}, {$pom->hour}, {$pom->cloud_coverage}, {$pom->temperature}°C\n";
@@ -63,25 +84,39 @@ class Location extends Model
 			'status' => 'OK',
 			'message' => ''
 		];
+
         $locs = self::all();
 
 		foreach ($locs as $l) {
 			$return['message'] .= 'Started ' . $l->name . '; ';
-			$xml = @file_get_contents($l->renes_api_call);
-			if (empty($xml)) {
-				echo 'Empty response!!!';
-				$return['status'] = 'error';
-				$return['message'] .= 'empty response!; ';
-				continue;
+			$ok = false;
+			$counter = 0;
+
+			while (!$ok && $counter < 5) {
+				$xml = file_get_contents($l->renes_api_call);
+
+				if (empty($xml)) {
+					echo 'Empty response!!!';
+					$return['status'] = 'error';
+					$return['message'] .= 'empty response!; ';
+					$counter++;
+					continue;
+				}
+
+				$parsed = Parser::xml($xml);
+				if (empty($parsed) || empty($parsed['tuple'])) {
+					echo 'No TUPLE element!!!';
+					$return['status'] = 'error';
+					$return['message'] .= 'missing tuple element; ';
+					$counter++;
+					continue;
+				}
+				$ok = true;
 			}
 
-			$parsed = Parser::xml($xml);
-			if (empty($parsed) || empty($parsed['tuple'])) {
-				echo 'No TUPLE element!!!';
-				$return['status'] = 'error';
-				$return['message'] .= 'missing tuple element; ';
-				continue;
-			}
+			if (!$ok) continue;
+
+			$return['status'] = 'OK';
 
 			foreach ($parsed['tuple'] as $e) {
 				$t = new \DateTime($e['UTC_time']);
@@ -159,8 +194,9 @@ class Location extends Model
 				if (!empty($r->pv_output_renes) && (int) $r->pv_output_renes) {
 					$temp['forecast'][$r->hour] = round($r->pv_output_renes/1000, 3);
 					$total += round($r->pv_output_renes/1000, 3);
-				} elseif (!empty($r->pv_output_correction) && (int) $r->pv_output_correction) {
-					$temp['forecast'][$r->hour] = round($r->pv_output_correction/1000, 3);
+
+				} elseif (!empty($r->pv_output_correction) && (int) $r->pv_output_max_correction) {
+					$temp['forecast'][$r->hour] = round($r->pv_output_max_correction/1000, 3);
 					$total += round($r->pv_output_correction/1000, 3);
 				}
 			}

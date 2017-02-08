@@ -41,7 +41,10 @@ class GetWeather extends Command
     {
         $result = Location::updateWeather();
         $this->info('Completed!');
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone("Europe/Sarajevo"));
+
         //var_dump($result);
-        mail('zv1985@gmail.com', 'Weather cron', "Status: {$result['status']}, Message: {$result['message']}");
+        mail('zv1985@gmail.com', 'Weather cron ' . $date->format('Y-m-d H:i:s'), "Status: {$result['status']}, Message: {$result['message']}");
     }
 }

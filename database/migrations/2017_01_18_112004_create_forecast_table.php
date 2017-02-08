@@ -23,15 +23,24 @@ class CreateForecastTable extends Migration
             $table->integer('hour');
             $table->integer('cloud_coverage')->nullable();
             $table->integer('temperature')->nullable();
-            
+
             // Yield fields (Wh)
 			$table->double('pv_output', 10, 2);
+            $table->double('pv_output_max', 10, 2)->nullable();
 			$table->double('pv_output_correction', 10, 2)->nullable();
+            $table->double('pv_output_max_correction', 10, 2)->nullable();
 			$table->double('pv_output_renes', 10, 2)->nullable();
 			$table->double('pv_output_ai', 10, 2)->nullable();
 			$table->double('pv_output_actual', 10, 2)->nullable();
 
             $table->timestamps();
+
+            $table->index('location_id');
+            $table->index('year');
+            $table->index('month');
+            $table->index('day');
+            $table->index('hour');
+            $table->index(['location_id', 'year', 'month', 'day']);
         });
     }
 
