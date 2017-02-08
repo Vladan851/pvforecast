@@ -63,7 +63,7 @@ class Location extends Model
 	            $pom->cloud_coverage = $h['sky'];
 	            $pom->temperature = $h['temp']['metric'];
 	            $pom->pv_output_correction = $pom->pv_output*(0.1 + (100 - $h['sky']) * 0.01);
-				$pom->pv_output_max_correction = $pom->pv_output_max*(0.3 + (100 - $h['sky']) * 0.01);
+				$pom->pv_output_max_correction = $pom->pv_output_max*(0.1 + (100 - $h['sky']) * 0.01);
 
 				if($pom->save()){
 	                echo "{$pom->location_id}, {$pom->id}, {$pom->year}, {$pom->month}, {$pom->day}, {$pom->hour}, {$pom->cloud_coverage}, {$pom->temperature}°C\n";
