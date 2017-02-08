@@ -43,9 +43,19 @@ class SendReports extends Command
         $locations = Location::all();
         foreach ($locations as $l) {
             $data = $l->getReportData();
-            $emails = ['zv1985@gmail.com', 'vladan.mastilovic@gmail.com'];
+            $bcc = ['zv1985@gmail.com', 'vladan.mastilovic@gmail.com'];
+            $emails = [];
+            if (!empty($l->user->email)) {
+                $emails[] = $l->user->email;
+            }
+            if (!empty($l->user->email1)) {
+                $emails[] = $l->user->email1;
+            }
+            
+            if (empty($emails)) continue;
+
             Mail::to($emails)
-                ->bcc([])
+                ->bcc($bcc)
                 ->send(new ForecastReport($data));
         }
     }

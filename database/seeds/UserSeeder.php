@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
 		$insert = [
 			[
 				'name' => 'Vladan M',
-				'email' => 'vladan.mastilovic@gmail.com',
-			    'email1' => 'djurdjica.tegaric@gmail.com',
+				'email' => 'dinecodoo@me.com',
+			    'email1' => 'draganand79@gmail.com',
 				'password' => bcrypt('akademija851'),
 			],
 			[
