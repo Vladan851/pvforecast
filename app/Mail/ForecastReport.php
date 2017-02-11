@@ -30,7 +30,7 @@ class ForecastReport extends Mailable
     public function build()
     {
         return $this->subject("Predikcija: {$this->data['name']}")
-                    ->from('inverterlog@gmail.com')
+                    ->from('pvforecast@misterzoki.com')
                     ->view('emails.forecast')
                     ->with('data', $this->data);
     }

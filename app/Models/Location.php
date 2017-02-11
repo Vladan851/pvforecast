@@ -91,10 +91,13 @@ class Location extends Model
 			$return['message'] .= 'Started ' . $l->name . '; ';
 			$ok = false;
 			$counter = 0;
+			$client = new \GuzzleHttp\Client();
 
 			while (!$ok && $counter < 5) {
-				$xml = file_get_contents($l->renes_api_call);
-
+				$res = $client->get($l->renes_api_call);
+				echo $res->getStatusCode(); // 200
+				$return['message'] .= ' ' . $res->getStatusCode() . '; ';
+				$xml = $res->getBody();
 				if (empty($xml)) {
 					echo 'Empty response!!!';
 					$return['status'] = 'error';
@@ -195,9 +198,9 @@ class Location extends Model
 					$temp['forecast'][$r->hour] = round($r->pv_output_renes/1000, 3);
 					$total += round($r->pv_output_renes/1000, 3);
 
-				} elseif (!empty($r->pv_output_correction) && (int) $r->pv_output_max_correction) {
+				} elseif (!empty($r->pv_output_max_correction) && (int) $r->pv_output_max_correction) {
 					$temp['forecast'][$r->hour] = round($r->pv_output_max_correction/1000, 3);
-					$total += round($r->pv_output_correction/1000, 3);
+					$total += round($r->pv_output_max_correction/1000, 3);
 				}
 			}
 			$temp['total'] = $total;
