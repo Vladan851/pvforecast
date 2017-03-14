@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\GetRenes::class,
 		Commands\GetWeather::class,
         Commands\SendReports::class,
+		Commands\UpdateOutputMax::class,
     ];
 
 

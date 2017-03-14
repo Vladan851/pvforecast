@@ -211,4 +211,81 @@ class Location extends Model
 		return $data;
 
 	}
+	
+	public static function updateOutputMax () {
+		$locations = self::all();
+        foreach ($locations as $l) {
+            $result = $l->forecasts()
+                ->select('year', 'month', 'day')
+                ->distinct()
+                ->get();
+            //var_dump($result); exit();
+            $data = [];
+            $batch = [];
+            $tmp = [];
+            foreach ($result as $row) {
+                if ( !empty($batch) && ( $row->day == 1 || $row->day == 16 ) ) {
+
+                    $k = $l->id . '-' . $row->year . '-' . ($row->day == 1 ? $row->month-1 : $row->month) . '-' . implode(' ', $batch);
+                    $data[$k] = [
+                        'location_id' => $l->id,
+                        'year' => $row->year,
+                        'month' => $row->day == 1 ? $row->month-1 : $row->month,
+                        'days' => $batch,
+                        'hours' => $tmp
+                    ];
+                    //var_dump($data);
+					//var_dump($tmp);
+					//exit();
+                    
+                    $batch = [];
+                    $tmp = [];
+                }
+				
+                $batch[] = $row->day;
+				
+                $hours = $l->forecasts()
+                    ->where('year', $row->year)
+                    ->where('month', $row->month)
+                    ->where('day', $row->day)
+                    ->get();
+                //var_dump($hours->toArray());exit();
+
+                foreach ($hours as $h) {
+					if ( (int) $h->pv_output && ( empty($tmp[$h->hour]) || $tmp[$h->hour] < $h->pv_output ) ) {
+                        $tmp[$h->hour] = $h->pv_output;
+                    }
+                }
+
+            }
+            // last batch
+            if (!empty($batch)) {
+                $k = $l->id . '-' . $row->year . '-' . $row->month . '-' . implode(' ', $batch);
+                $data[$k] = [
+                    'location_id' => $l->id,
+                    'year' => $row->year,
+                    'month' => $row->month,
+                    'days' => $batch,
+                    'hours' => $tmp
+                ];
+            }
+
+            foreach ($data as $key => $day) {
+                echo("$key\n");
+                foreach ($day['hours'] as $h => $p) {
+                    $l->forecasts()
+                        ->where([
+                            ['year', $day['year']],
+                            ['month', $day['month']],
+                            //['day', $day['day']],
+                            ['hour', $h]
+                        ])
+                        ->whereIn('day', $day['days'])
+                        ->update(['pv_output_max' => $p]);
+                }
+
+            }
+        } // end foreach location
+
+	}
 }
