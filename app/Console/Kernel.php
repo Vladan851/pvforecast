@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\GetRenes::class,
 		Commands\GetWeather::class,
         Commands\SendReports::class,
-		Commands\UpdateOutputMax::class,
+		//Commands\UpdateOutputMax::class,
     ];
 
 
@@ -29,11 +29,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:weather')->cron('* * * * *');
+        $schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:weather')->cron('44 */6 * * *');
 
-        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:renes')->hourlyAt(7);
+        $schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:renes')->cron('2 12 * * *');
 
-        //$schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:reports')->cron('30 * * * *');
+        $schedule->exec('php -d register_argc_argv=On /home/misterz1/public_html/pvforecast/artisan forecast:reports')->cron('3 4 * * *');
     }
 
     /**

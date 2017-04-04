@@ -122,6 +122,8 @@ class Location extends Model
 			$return['status'] = 'OK';
 
 			foreach ($parsed['tuple'] as $e) {
+				if (!(int)$e['PV_power_output']) continue;
+				
 				$t = new \DateTime($e['UTC_time']);
 				$t->setTimezone(new \DateTimeZone("Europe/Sarajevo"));
 
