@@ -53,6 +53,13 @@ class Location extends Model
 			$return['status'] = 'OK';
 
 			foreach ($hours as $h){
+				
+				//temporarily solution for time changing
+				if ($h['FCTTIME']['hour']==0) {
+					continue;
+				}
+				//end of temporarily solution for time changing
+				
 	            $pom = $l->forecasts()->where([
 						['year', $h['FCTTIME']['year']],
 						['month', $h['FCTTIME']['mon']],
